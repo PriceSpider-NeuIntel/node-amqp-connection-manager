@@ -320,21 +320,22 @@ export default class ChannelWrapper extends EventEmitter {
                 const sendPromise = (() => {
                     switch (message.type) {
                         case 'publish':
-                            return new Promise(function (resolve) {
+                            return new Promise(function (resolve, reject) {
                                 const result = channel.publish(message.exchange, message.routingKey, encodedMessage,
                                     message.options,
                                     err => {
-                                        console.error(err);
-                                        // if (err) {
-                                        //     reject(err);
-                                        // } else {
+                                        if (err) {
+                                            reject(err);
+                                        }// else {
                                         //     setImmediate(() => resolve(result));
                                         // }
                                     });
 
                                 if (result) {
+                                    console.log('good');
                                     setImmediate(() => resolve(result));
                                 } else {
+                                    console.log('bad');
                                     channel.once('drain', () => {
                                         resolve(true);
                                     });
@@ -343,10 +344,9 @@ export default class ChannelWrapper extends EventEmitter {
                         case 'sendToQueue':
                             return new Promise(function (resolve) {
                                 const result = channel.sendToQueue(message.queue, encodedMessage, message.options, err => {
-                                    console.error(err);
-                                    // if (err) {
-                                    //     reject(err);
-                                    // } else {
+                                    if (err) {
+                                        reject(err);
+                                    } //else {
                                     //     setImmediate(() => resolve(result));
                                     // }
                                 });
