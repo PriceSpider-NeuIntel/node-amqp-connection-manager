@@ -332,10 +332,8 @@ export default class ChannelWrapper extends EventEmitter {
                                     });
 
                                 if (result) {
-                                    console.log('good');
                                     setImmediate(() => resolve(result));
                                 } else {
-                                    console.log('bad');
                                     channel.once('drain', () => {
                                         resolve(true);
                                     });
