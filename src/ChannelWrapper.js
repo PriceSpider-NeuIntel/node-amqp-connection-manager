@@ -342,7 +342,7 @@ export default class ChannelWrapper extends EventEmitter {
                                 }
                             });
                         case 'sendToQueue':
-                            return new Promise(function (resolve) {
+                            return new Promise(function (resolve, reject) {
                                 const result = channel.sendToQueue(message.queue, encodedMessage, message.options, err => {
                                     if (err) {
                                         reject(err);
